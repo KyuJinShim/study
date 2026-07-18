@@ -91,43 +91,31 @@ int main() {
 
             // move balls
             balls.clear();
-            for (int idx = 0; idx < tmp.size();idx++)
+            for (int start = 0; start < tmp.size();)
             {
-                int check_idx = idx;
-                int winner_idx = idx;
-                int winner_w = tmp[idx].w;
-                int winner_num = tmp[idx].num;
+                int end = start;
+                int winner = start;
 
-                // if crushed 
-                while (check_idx + 1 < tmp.size() &&
-                    tmp[check_idx].y == tmp[check_idx + 1].y &&
-                    tmp[check_idx].x == tmp[check_idx + 1].x)
+                while (end + 1 < tmp.size() &&
+                    tmp[end].y == tmp[end + 1].y &&
+                    tmp[end].x == tmp[end + 1].x)
                 {
-                    if (tmp[winner_idx].w < tmp[check_idx + 1].w)
-                    {
-                        winner_idx = check_idx + 1;
-                        winner_w = tmp[check_idx + 1].w;
-                        winner_num = tmp[check_idx + 1].num;
-                    }
-                    else if (tmp[winner_idx].w == tmp[check_idx + 1].w)
-                    {
-                        if (tmp[winner_idx].num < tmp[check_idx + 1].num)
-                        {
-                            winner_idx = check_idx + 1;
-                            winner_w = tmp[check_idx + 1].w;
-                            winner_num = tmp[check_idx + 1].num;
-                        }
-                    }
-                    check_idx++;
-                } //while() same pos check
+                    end++;
 
-                balls.push_back(tmp[winner_idx]);
+                    if ((tmp[winner].w < tmp[end].w) ||
+                        (tmp[winner].w == tmp[end].w) && (tmp[winner].num < tmp[end].num))
+                    {
+                        winner = end;
+                    }
+                }
 
-                if (idx != check_idx)
+                balls.push_back(tmp[winner] );
+
+                if (end != start)
                 {
-                    idx = check_idx;
                     last_crushed_time = time;
                 }
+                start = end + 1;
             }
         }
         if (last_crushed_time == 0)
