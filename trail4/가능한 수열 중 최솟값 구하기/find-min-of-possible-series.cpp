@@ -35,32 +35,26 @@ bool possible(int n){
     return true;
 }
 
-bool DONE = false;
-
-void solve(int depth){
-    if(DONE)
-        return;
+bool solve(int depth){
     if(depth == N)
     {
-        if(!DONE)
+        for(int i=0;i<v.size();i++)
         {
-            for(int i=0;i<v.size();i++)
-            {
-                ans.push_back({v[i]});
-                DONE = true;
-            }
+            ans.push_back({v[i]});
         }
-        return;
+        return true;
     }
     for(int i=4;i<=6;i++)
     {
         if(possible(i))
         {
             v.push_back({i});
-            solve(depth+1);
+            if(solve(depth+1))
+                return true;
             v.pop_back();
         }
     }
+    return false;
 }
 
 int main() {
